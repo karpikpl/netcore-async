@@ -1,38 +1,35 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Threading.Tasks;
 
-namespace dotnet_async
+namespace dotnetasync
 {
 	class Program
 	{
-		static void Main(string[] args)
+		public static void Main(string[] args)
 		{
 			Console.WriteLine("Starting async test for dotnet");
-			RunFuntuff().Wait();
-		}
 
-		static async Task RunFuntuff()
-		{
-			var sw = new Stopwatch();
-			sw.Start();
-			var aTask = await Get(2000);
-			var bTask = await Get(500);
-			var cTask = await Get(5);
-			sw.Stop();
+			string command = string.Empty;
 
-			Console.WriteLine($"Async completed - got ${aTask} ${bTask} ${cTask} in ${sw.ElapsedMilliseconds}");
-		}
+			while (command != "e") {
 
-		static async Task<int> Get(int id)
-		{
-			Console.WriteLine($"Starting task nr {id}");
+				switch (command)
+				{
+					case "1":
+						Synchronous.RunFunStuff().Wait();
+						command = string.Empty;
+						break;
+			
+					case "2":
+						InParallel.RunFunStuff().Wait();
+						command = string.Empty;
+						break;
 
-			await Task.Delay(id);
-
-			Console.WriteLine($"Completed task nr {id}");
-
-			return id;
+					default:
+						Console.WriteLine("What operations would you like to run?\n\t1 - synchronous\n\t2 - parallel\n\te - exit\n");
+						command = Console.ReadLine();
+						break;
+				}
+			}
 		}
 	}
 }
